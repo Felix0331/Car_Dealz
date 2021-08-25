@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Dealz</title>
+</head>
+<body>
+    <div>
+        <h1>Welcome to Car Dealz, {{session['first_name']}}!!!</h1>
+        <form action="/logout"> <button>logout</button></form>
+        <form action="/view_purchases"> <button>View Purchases</button></form>
+    </div>
+    <div>
+        <h1>All Shows</h1>
+        <table>
+            <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Year</th>
+                        <th>Seller</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for car in cars %}
+                    <tr>
+                        <td>{{car.model}}</td>
+                        <td>{{car.year}}</td>
+                        <td>{{car.seller_name}}</td>
+                        {% if car.seller_id == session['user_id']%}
+                            <td><a href="/edit/{{car.id}}">edit</a> | <a href="/delete/{{car.id}}">delete</a></td>
+                        {% elif car.sold == 1 and not car.seller_id == session['user_id'] %}
+                            <td>SOLD</td>
+                        {%else%}
+                            <td><a href="/show/{{car.id}}">View</a></td>
+                        {%endif%}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <form action="/add_car"> <button>Add a Car</button></form>
+    </div>
+
+</body>
+</html>
